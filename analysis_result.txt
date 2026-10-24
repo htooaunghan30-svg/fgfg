@@ -1,0 +1,38 @@
+Analyzing exercise_screen.dart...                               
+
+warning - Unused import: 'dart:typed_data' - lib\presentation\screens\exercise_screen.dart:3:8 - unused_import
+warning - Unused import: 'package:camera/camera.dart' - lib\presentation\screens\exercise_screen.dart:10:8 - unused_import
+warning - Unused import: 'package:permission_handler/permission_handler.dart' - lib\presentation\screens\exercise_screen.dart:11:8 - unused_import
+   info - The import of 'package:google_mlkit_commons/google_mlkit_commons.dart' is unnecessary because all of the used elements are also provided by the import of 'package:google_mlkit_pose_detection/google_mlkit_pose_detection.dart' - lib\presentation\screens\exercise_screen.dart:12:8 - unnecessary_import
+warning - Unused import: 'package:path_provider/path_provider.dart' - lib\presentation\screens\exercise_screen.dart:13:8 - unused_import
+warning - Unused import: '../providers/exercise_provider.dart' - lib\presentation\screens\exercise_screen.dart:19:8 - unused_import
+warning - Unused import: '../../features/iconic/iconic_program.dart' - lib\presentation\screens\exercise_screen.dart:25:8 - unused_import
+warning - Unused import: 'premium_activation_screen.dart' - lib\presentation\screens\exercise_screen.dart:35:8 - unused_import
+warning - Unused import: 'dart:math' - lib\presentation\screens\exercise_screen.dart:37:8 - unused_import
+   info - The private field _analysisRestartInProgress could be 'final' - lib\presentation\screens\exercise_screen.dart:117:8 - prefer_final_fields
+warning - The value of the field '_analysisRestartInProgress' isn't used - lib\presentation\screens\exercise_screen.dart:117:8 - unused_field
+warning - The value of the field '_maxRecordingDuration' isn't used - lib\presentation\screens\exercise_screen.dart:129:25 - unused_field
+warning - The value of the field '_voiceCountCooldown' isn't used - lib\presentation\screens\exercise_screen.dart:130:25 - unused_field
+warning - The value of the field '_lastVoiceCountAt' isn't used - lib\presentation\screens\exercise_screen.dart:131:13 - unused_field
+warning - The value of the field '_voiceCountPremiumEnabled' isn't used - lib\presentation\screens\exercise_screen.dart:132:9 - unused_field
+warning - The value of the field '_voiceCountingEnabled' isn't used - lib\presentation\screens\exercise_screen.dart:133:9 - unused_field
+warning - The value of the field '_voiceCountingLanguage' isn't used - lib\presentation\screens\exercise_screen.dart:134:11 - unused_field
+   info - The declaration '_exportRecordingWithSelectedEffects' isn't referenced - lib\presentation\screens\exercise_screen.dart:648:16 - unused_element
+
+flutter : 18 issues found. 
+(ran in 3.3s)
+At line:1 char:1
++ flutter analyze lib/prese
+ntation/screens/exercise_sc
+reen.dart 2>&1 |  ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~
+    + CategoryInfo         
+     : NotSpecified: (18   
+  issues found. (ran in    
+ 3.3s):String) [], Remo    
+teException
+    + FullyQualifiedErrorI 
+   d : NativeCommandError
+ 

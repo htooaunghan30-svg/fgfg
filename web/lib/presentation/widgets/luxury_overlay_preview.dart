@@ -1,0 +1,1539 @@
+import 'dart:math' as math;
+
+import 'package:flutter/material.dart';
+
+import '../../features/premium/workout_overlay_customization.dart';
+
+class LuxuryOverlayPreview extends StatelessWidget {
+  final WorkoutOverlayCustomization customization;
+  final int repCount;
+  final double accuracy;
+  final OverlayMovementPhase phase;
+  final VoidCallback? onToggleBranding;
+  final VoidCallback? onToggleAccuracy;
+  final VoidCallback? onToggleRepCounter;
+
+  const LuxuryOverlayPreview({
+    super.key,
+    required this.customization,
+    this.repCount = 24,
+    this.accuracy = 0.87,
+    this.phase = OverlayMovementPhase.up,
+    this.onToggleBranding,
+    this.onToggleAccuracy,
+    this.onToggleRepCounter,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final palette = customization.palette;
+    final phaseColor = customization.phaseColorFor(phase);
+    final iconSlot = customization.icons.iconForPhase(phase);
+    final previewIconLabel =
+        (iconSlot.svgPath ?? '').trim().isNotEmpty ? 'SVG' : iconSlot.glyph;
+    final compact = MediaQuery.of(context).size.width < 380;
+    final bannerPos = customization.layout.bannerPosition;
+
+    return Opacity(
+      opacity: customization.layout.opacity,
+      child: Transform.scale(
+        scale: customization.layout.globalScale,
+        child: Container(
+          constraints: const BoxConstraints(minHeight: 360),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(30),
+            gradient: LinearGradient(
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+              colors: [
+                palette.primary,
+                Color.lerp(palette.primary, palette.secondary, 0.65) ??
+                    palette.secondary,
+                palette.surface,
+              ],
+            ),
+            boxShadow: [
+              BoxShadow(
+                color: palette.accent.withOpacity(0.12),
+                blurRadius: 28,
+                spreadRadius: 2,
+                offset: const Offset(0, 16),
+              ),
+            ],
+          ),
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(30),
+            child: Stack(
+              children: [
+                Positioned.fill(
+                  child: CustomPaint(
+                    painter: _AmbientLuxuryPainter(
+                      primary: palette.primary,
+                      secondary: palette.secondary,
+                      accent: palette.accent,
+                      performanceMode: customization.performanceMode,
+                      finish: customization.finish,
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: EdgeInsets.all(compact ? 18 : 22),
+                  child: _buildLayoutForPosition(
+                    bannerPos: bannerPos,
+                    previewIconLabel: previewIconLabel,
+                    phaseColor: phaseColor,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildLayoutForPosition({
+    required OverlaySlotPosition bannerPos,
+    required String previewIconLabel,
+    required Color phaseColor,
+  }) {
+    final palette = customization.palette;
+    if (bannerPos == OverlaySlotPosition.left) {
+      // Left layout: banner stays at top, accuracy bar + rep counter
+      // positioned vertically at the top-left corner
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Stack(
+            children: [
+              Opacity(
+                opacity: customization.showBranding ? 1.0 : 0.25,
+                child: _TopBanner(
+                  customization: customization,
+                  iconGlyph: previewIconLabel,
+                ),
+              ),
+              if (onToggleBranding != null)
+                Positioned(
+                  top: 4,
+                  right: 4,
+                  child: _VisibilityToggleButton(
+                    isVisible: customization.showBranding,
+                    onToggle: onToggleBranding!,
+                    accentColor: palette.accent,
+                  ),
+                ),
+            ],
+          ),
+          const SizedBox(height: 18),
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // Left side: accuracy bar + rep counter stacked vertically
+              SizedBox(
+                width: 128,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    SizedBox(
+                      height: 72,
+                      child: Stack(
+                        children: [
+                          Opacity(
+                            opacity: customization.accuracyBar.show ? 1.0 : 0.25,
+                            child: _AccuracyBarPreview(
+                              customization: customization,
+                              accuracy: accuracy,
+                            ),
+                          ),
+                          if (onToggleAccuracy != null)
+                            Positioned(
+                              top: 2,
+                              right: 2,
+                              child: _VisibilityToggleButton(
+                                isVisible: customization.accuracyBar.show,
+                                onToggle: onToggleAccuracy!,
+                                accentColor: palette.accent,
+                                mini: true,
+                              ),
+                            ),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(height: 12),
+                    Align(
+                      alignment: Alignment.centerLeft,
+                      child: Stack(
+                        children: [
+                          Opacity(
+                            opacity: customization.repCounter.show ? 1.0 : 0.25,
+                            child: _RepCounterPreview(
+                              customization: customization,
+                              repCount: repCount,
+                              phase: phase,
+                              iconGlyph: previewIconLabel,
+                              phaseColor: phaseColor,
+                            ),
+                          ),
+                          if (onToggleRepCounter != null)
+                            Positioned(
+                              top: 0,
+                              right: 0,
+                              child: _VisibilityToggleButton(
+                                isVisible: customization.repCounter.show,
+                                onToggle: onToggleRepCounter!,
+                                accentColor: palette.accent,
+                                mini: true,
+                              ),
+                            ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              const Spacer(),
+            ],
+          ),
+          const Spacer(),
+          _BottomStatsCard(
+            customization: customization,
+            repCount: repCount,
+            accuracy: accuracy,
+            phase: phase,
+          ),
+        ],
+      );
+    }
+
+    if (bannerPos == OverlaySlotPosition.right) {
+      // Right layout: banner stays at top, accuracy bar + rep counter
+      // positioned vertically at the top-right corner
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Stack(
+            children: [
+              Opacity(
+                opacity: customization.showBranding ? 1.0 : 0.25,
+                child: _TopBanner(
+                  customization: customization,
+                  iconGlyph: previewIconLabel,
+                ),
+              ),
+              if (onToggleBranding != null)
+                Positioned(
+                  top: 4,
+                  right: 4,
+                  child: _VisibilityToggleButton(
+                    isVisible: customization.showBranding,
+                    onToggle: onToggleBranding!,
+                    accentColor: palette.accent,
+                  ),
+                ),
+            ],
+          ),
+          const SizedBox(height: 18),
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Spacer(),
+              // Right side: accuracy bar + rep counter stacked vertically
+              SizedBox(
+                width: 128,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    SizedBox(
+                      height: 72,
+                      child: Stack(
+                        children: [
+                          Opacity(
+                            opacity: customization.accuracyBar.show ? 1.0 : 0.25,
+                            child: _AccuracyBarPreview(
+                              customization: customization,
+                              accuracy: accuracy,
+                            ),
+                          ),
+                          if (onToggleAccuracy != null)
+                            Positioned(
+                              top: 2,
+                              left: 2,
+                              child: _VisibilityToggleButton(
+                                isVisible: customization.accuracyBar.show,
+                                onToggle: onToggleAccuracy!,
+                                accentColor: palette.accent,
+                                mini: true,
+                              ),
+                            ),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(height: 12),
+                    Align(
+                      alignment: Alignment.centerRight,
+                      child: Stack(
+                        children: [
+                          Opacity(
+                            opacity: customization.repCounter.show ? 1.0 : 0.25,
+                            child: _RepCounterPreview(
+                              customization: customization,
+                              repCount: repCount,
+                              phase: phase,
+                              iconGlyph: previewIconLabel,
+                              phaseColor: phaseColor,
+                            ),
+                          ),
+                          if (onToggleRepCounter != null)
+                            Positioned(
+                              top: 0,
+                              left: 0,
+                              child: _VisibilityToggleButton(
+                                isVisible: customization.repCounter.show,
+                                onToggle: onToggleRepCounter!,
+                                accentColor: palette.accent,
+                                mini: true,
+                              ),
+                            ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+          const Spacer(),
+          _BottomStatsCard(
+            customization: customization,
+            repCount: repCount,
+            accuracy: accuracy,
+            phase: phase,
+          ),
+        ],
+      );
+    }
+
+    // Top (default): original layout — accuracy bar + rep counter in a row
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Stack(
+          children: [
+            Opacity(
+              opacity: customization.showBranding ? 1.0 : 0.25,
+              child: _TopBanner(
+                customization: customization,
+                iconGlyph: previewIconLabel,
+              ),
+            ),
+            if (onToggleBranding != null)
+              Positioned(
+                top: 4,
+                right: 4,
+                child: _VisibilityToggleButton(
+                  isVisible: customization.showBranding,
+                  onToggle: onToggleBranding!,
+                  accentColor: palette.accent,
+                ),
+              ),
+          ],
+        ),
+        const SizedBox(height: 18),
+        Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Expanded(
+              child: Stack(
+                children: [
+                  Opacity(
+                    opacity: customization.accuracyBar.show ? 1.0 : 0.25,
+                    child: _AccuracyBarPreview(
+                      customization: customization,
+                      accuracy: accuracy,
+                    ),
+                  ),
+                  if (onToggleAccuracy != null)
+                    Positioned(
+                      top: 4,
+                      right: 4,
+                      child: _VisibilityToggleButton(
+                        isVisible: customization.accuracyBar.show,
+                        onToggle: onToggleAccuracy!,
+                        accentColor: palette.accent,
+                        mini: true,
+                      ),
+                    ),
+                ],
+              ),
+            ),
+            const SizedBox(width: 14),
+            Stack(
+              children: [
+                Opacity(
+                  opacity: customization.repCounter.show ? 1.0 : 0.25,
+                  child: _RepCounterPreview(
+                    customization: customization,
+                    repCount: repCount,
+                    phase: phase,
+                    iconGlyph: previewIconLabel,
+                    phaseColor: phaseColor,
+                  ),
+                ),
+                if (onToggleRepCounter != null)
+                  Positioned(
+                    top: 0,
+                    right: 0,
+                    child: _VisibilityToggleButton(
+                      isVisible: customization.repCounter.show,
+                      onToggle: onToggleRepCounter!,
+                      accentColor: palette.accent,
+                      mini: true,
+                    ),
+                  ),
+              ],
+            ),
+          ],
+        ),
+        const Spacer(),
+        _BottomStatsCard(
+          customization: customization,
+          repCount: repCount,
+          accuracy: accuracy,
+          phase: phase,
+        ),
+      ],
+    );
+  }
+}
+
+class _VisibilityToggleButton extends StatelessWidget {
+  final bool isVisible;
+  final VoidCallback onToggle;
+  final Color accentColor;
+  final bool mini;
+
+  const _VisibilityToggleButton({
+    required this.isVisible,
+    required this.onToggle,
+    required this.accentColor,
+    this.mini = false,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: onToggle,
+      child: Container(
+        padding: EdgeInsets.all(mini ? 4 : 6),
+        decoration: BoxDecoration(
+          shape: BoxShape.circle,
+          color: Colors.black.withOpacity(0.4),
+          border: Border.all(
+            color: (isVisible ? accentColor : Colors.white).withOpacity(0.4),
+            width: 1,
+          ),
+          boxShadow: [
+            if (isVisible)
+              BoxShadow(
+                color: accentColor.withOpacity(0.2),
+                blurRadius: 4,
+                spreadRadius: 1,
+              ),
+          ],
+        ),
+        child: Icon(
+          isVisible ? Icons.visibility : Icons.visibility_off,
+          size: mini ? 14 : 18,
+          color: isVisible ? accentColor : Colors.white.withOpacity(0.6),
+        ),
+      ),
+    );
+  }
+}
+
+class _TopBanner extends StatelessWidget {
+  final WorkoutOverlayCustomization customization;
+  final String iconGlyph;
+
+  const _TopBanner({
+    required this.customization,
+    required this.iconGlyph,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final palette = customization.palette;
+    final sheen = customization.finish.sheenSweep.clamp(0.0, 1.0);
+    final bloom = customization.finish.bloomIntensity.clamp(0.0, 1.0);
+    return Stack(
+      children: [
+        Container(
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(24),
+            color: Colors.white.withOpacity(0.08),
+            border: Border.all(color: Colors.white.withOpacity(0.14)),
+            boxShadow: [
+              BoxShadow(
+                color: palette.accent.withOpacity(0.06 + (0.10 * bloom)),
+                blurRadius: 10 + (16 * bloom),
+                spreadRadius: 0.5 + (1.4 * bloom),
+              ),
+            ],
+          ),
+          child: Row(
+            children: [
+              Container(
+                width: 42,
+                height: 42,
+                alignment: Alignment.center,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  gradient: LinearGradient(
+                    colors: [
+                      palette.accent,
+                      Color.lerp(palette.accent, palette.secondary, 0.55) ??
+                          palette.secondary,
+                    ],
+                  ),
+                ),
+                child: Text(
+                  iconGlyph,
+                  style: TextStyle(
+                    color: palette.primary,
+                    fontSize: 18,
+                    fontWeight: FontWeight.w800,
+                  ),
+                ),
+              ),
+              const SizedBox(width: 12),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      customization.title,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: TextStyle(
+                        color: palette.textPrimary,
+                        fontSize: 16,
+                        fontWeight: FontWeight.w800,
+                        letterSpacing: 0.3,
+                      ),
+                    ),
+                    const SizedBox(height: 2),
+                    Text(
+                      customization.subtitle,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: TextStyle(
+                        color: palette.textSecondary,
+                        fontSize: 12,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Text(
+                customization.brandingText,
+                style: TextStyle(
+                  color: palette.accent.withOpacity(0.92),
+                  fontSize: 11,
+                  fontWeight: FontWeight.w700,
+                  letterSpacing: 1.0,
+                ),
+              ),
+            ],
+          ),
+        ),
+        Positioned.fill(
+          child: IgnorePointer(
+            child: DecoratedBox(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(24),
+                gradient: LinearGradient(
+                  begin: const Alignment(-1.0, -0.3),
+                  end: const Alignment(0.8, 0.5),
+                  colors: [
+                    Colors.white.withOpacity(0.02 + (0.10 * sheen)),
+                    Colors.white.withOpacity(0.10 + (0.16 * sheen)),
+                    Colors.transparent,
+                  ],
+                  stops: const [0.0, 0.34, 0.78],
+                ),
+              ),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class _AccuracyBarPreview extends StatelessWidget {
+  final WorkoutOverlayCustomization customization;
+  final double accuracy;
+
+  const _AccuracyBarPreview({
+    required this.customization,
+    required this.accuracy,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final palette = customization.palette;
+    final density = 4 + (customization.accuracyBar.markerDensity * 8).round();
+    final glow = customization.accuracyBar.glowIntensity;
+    final styleIntensity = customization.accuracyBar.styleIntensity;
+    final motion = customization.accuracyBar.liquidMotion;
+    final spill = customization.accuracyBar.spillLength;
+    final spillWidth = customization.accuracyBar.spillWidth;
+    final thresholdGlow = customization.accuracyBar.thresholdGlow;
+    final barColor = accuracy >= 0.8
+        ? palette.accent
+        : accuracy >= 0.6
+            ? palette.phaseDown
+            : palette.phaseHold;
+
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final thresholdLeft = math.max(0.0, (constraints.maxWidth * 0.8) - 2);
+        final outerRadius = 18 + (10 * styleIntensity);
+        final innerRadius = 10 + (10 * styleIntensity);
+        final barGradient = () {
+          switch (customization.accuracyBar.style) {
+            case OverlayAccuracyBarStyle.flat:
+              return [barColor, barColor];
+            case OverlayAccuracyBarStyle.glass:
+              return [
+                Color.lerp(barColor, Colors.white, 0.38 + (0.22 * styleIntensity))!,
+                Color.lerp(barColor, palette.textPrimary, 0.16)!,
+                barColor.withOpacity(0.78 + (0.16 * styleIntensity)),
+              ];
+            case OverlayAccuracyBarStyle.neon:
+              return [
+                Color.lerp(barColor, palette.accent, 0.12)!,
+                Color.lerp(barColor, Colors.white, 0.18)!,
+                palette.accent,
+              ];
+            case OverlayAccuracyBarStyle.prism:
+              return [
+                palette.phaseDown,
+                barColor,
+                palette.phaseHold,
+                palette.accent,
+              ];
+            case OverlayAccuracyBarStyle.velvet:
+              return [
+                Color.lerp(barColor, palette.primary, 0.34)!,
+                Color.lerp(barColor, palette.secondary, 0.18)!,
+                Color.lerp(barColor, palette.accent, 0.12)!,
+              ];
+            case OverlayAccuracyBarStyle.segmented:
+            case OverlayAccuracyBarStyle.gradient:
+              return [
+                Color.lerp(barColor, palette.secondary, 0.18) ?? barColor,
+                barColor,
+                palette.accent,
+              ];
+          }
+        }();
+        return Container(
+          height: 72,
+          padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(outerRadius),
+            color: palette.surface.withOpacity(0.72),
+            border: Border.all(color: Colors.white.withOpacity(0.12)),
+          ),
+          child: Stack(
+            children: [
+              Positioned.fill(
+                child: DecoratedBox(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(innerRadius),
+                    gradient: LinearGradient(
+                      colors: [
+                        Colors.white.withOpacity(
+                          customization.accuracyBar.style ==
+                                  OverlayAccuracyBarStyle.glass
+                              ? 0.09 + (0.08 * styleIntensity)
+                              : 0.04,
+                        ),
+                        Colors.white.withOpacity(0.02),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+              Positioned.fill(
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(14),
+                  child: Row(
+                    children: List.generate(density, (index) {
+                      final segmentVisible =
+                          customization.accuracyBar.style ==
+                                  OverlayAccuracyBarStyle.segmented ||
+                              customization.accuracyBar.style ==
+                                  OverlayAccuracyBarStyle.prism;
+                      final opacity =
+                          segmentVisible ? 0.14 + (index * 0.02) : 0.0;
+                      return Expanded(
+                        child: Padding(
+                          padding: EdgeInsets.only(
+                            right: index == density - 1 ? 0 : 3,
+                          ),
+                          child: DecoratedBox(
+                            decoration: BoxDecoration(
+                              color: Colors.white.withOpacity(
+                                opacity.clamp(0.0, 0.28).toDouble(),
+                              ),
+                              borderRadius:
+                                  BorderRadius.circular(999 * innerRadius),
+                            ),
+                          ),
+                        ),
+                      );
+                    }),
+                  ),
+                ),
+              ),
+              FractionallySizedBox(
+                widthFactor: accuracy.clamp(0.0, 1.0).toDouble(),
+                child: Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(innerRadius),
+                    gradient: LinearGradient(colors: barGradient),
+                    boxShadow: [
+                      BoxShadow(
+                        color: (customization.accuracyBar.style ==
+                                OverlayAccuracyBarStyle.neon
+                            ? palette.accent
+                            : barColor)
+                            .withOpacity(0.16 + (0.30 * glow) + (0.10 * styleIntensity)),
+                        blurRadius: 8 + (18 * glow) + (8 * styleIntensity),
+                        spreadRadius: 0.5 + (1.8 * glow) + (0.8 * styleIntensity),
+                      ),
+                    ],
+                  ),
+                  child: CustomPaint(
+                    painter: _AccuracyLiquidPainter(
+                      barColor: barColor,
+                      accent: palette.accent,
+                      gloss: palette.textPrimary,
+                      liquidMotion: motion + (styleIntensity * 0.08),
+                    ),
+                  ),
+                ),
+              ),
+              if (customization.accuracyBar.showThresholdLine)
+                Positioned(
+                  left: thresholdLeft,
+                  top: 2,
+                  bottom: 2,
+                  child: Stack(
+                    alignment: Alignment.center,
+                    children: [
+                      Container(
+                        width: 8.0 + (10 * thresholdGlow),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(999),
+                          color: palette.textPrimary
+                              .withOpacity(0.08 + (0.14 * thresholdGlow)),
+                          boxShadow: [
+                            BoxShadow(
+                              color: palette.textPrimary
+                                  .withOpacity(0.14 + (0.24 * thresholdGlow)),
+                              blurRadius: 8 + (14 * thresholdGlow),
+                              spreadRadius: 0.4 + (1.6 * thresholdGlow),
+                            ),
+                          ],
+                        ),
+                      ),
+                      Container(
+                        width: 2.4 + (2.0 * thresholdGlow),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(999),
+                          color: palette.textPrimary
+                              .withOpacity(0.72 + (0.24 * thresholdGlow)),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              if (accuracy >= 0.8)
+                Positioned(
+                  left: math.max(0, thresholdLeft - 14),
+                  top: 18,
+                  child: IgnorePointer(
+                    child: CustomPaint(
+                      size: Size(30 + (18 * spillWidth), 42 + (80 * spill)),
+                      painter: _AccuracySpillPainter(
+                        color: barColor,
+                        accent: palette.accent,
+                        glowIntensity: glow,
+                        spillLength: spill,
+                        spillWidth: spillWidth,
+                        liquidMotion: motion,
+                      ),
+                    ),
+                  ),
+                ),
+              Positioned.fill(
+                child: Center(
+                  child: Text(
+                    '${(accuracy * 100).toStringAsFixed(1)}% ACCURACY',
+                    style: TextStyle(
+                      color: palette.textPrimary,
+                      fontSize: 12,
+                      fontWeight: FontWeight.w800,
+                      letterSpacing: 0.5,
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+}
+
+class _RepCounterPreview extends StatelessWidget {
+  final WorkoutOverlayCustomization customization;
+  final int repCount;
+  final OverlayMovementPhase phase;
+  final String iconGlyph;
+  final Color phaseColor;
+
+  const _RepCounterPreview({
+    required this.customization,
+    required this.repCount,
+    required this.phase,
+    required this.iconGlyph,
+    required this.phaseColor,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final palette = customization.palette;
+    final size = 118.0 * customization.repCounter.scale;
+
+    return SizedBox(
+      width: size,
+      height: size,
+      child: CustomPaint(
+        painter: _CounterRingPainter(
+          customization: customization,
+          phaseColor: phaseColor,
+        ),
+        child: Center(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text(
+                iconGlyph,
+                style: TextStyle(
+                  color: palette.accent.withOpacity(0.9),
+                  fontSize: 18,
+                  fontWeight: FontWeight.w700,
+                ),
+              ),
+              const SizedBox(height: 2),
+              Text(
+                '$repCount',
+                style: TextStyle(
+                  color: palette.textPrimary,
+                  fontSize: 30,
+                  fontWeight: FontWeight.w900,
+                ),
+              ),
+              Text(
+                phase.storageValue.toUpperCase(),
+                style: TextStyle(
+                  color: phaseColor,
+                  fontSize: 11,
+                  fontWeight: FontWeight.w800,
+                  letterSpacing: 1.2,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _BottomStatsCard extends StatelessWidget {
+  final WorkoutOverlayCustomization customization;
+  final int repCount;
+  final double accuracy;
+  final OverlayMovementPhase phase;
+
+  const _BottomStatsCard({
+    required this.customization,
+    required this.repCount,
+    required this.accuracy,
+    required this.phase,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final palette = customization.palette;
+    final sheen = customization.finish.sheenSweep.clamp(0.0, 1.0);
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(24),
+        color: Colors.black.withOpacity(0.18),
+        border: Border.all(color: Colors.white.withOpacity(0.10)),
+        gradient: LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: [
+            Colors.white.withOpacity(0.02 + (0.04 * sheen)),
+            Colors.transparent,
+            palette.accent.withOpacity(0.04 + (0.06 * sheen)),
+          ],
+        ),
+      ),
+      child: Row(
+        children: [
+          _MetricChip(
+            label: 'Reps',
+            value: '$repCount',
+            accent: palette.accent,
+            textColor: palette.textPrimary,
+          ),
+          const SizedBox(width: 10),
+          _MetricChip(
+            label: 'Phase',
+            value: phase.storageValue.toUpperCase(),
+            accent: customization.phaseColorFor(phase),
+            textColor: palette.textPrimary,
+          ),
+          const SizedBox(width: 10),
+          Expanded(
+            child: _MetricChip(
+              label: 'Mode',
+              value: customization.performanceMode.storageValue.toUpperCase(),
+              accent: palette.textSecondary,
+              textColor: palette.textPrimary,
+            ),
+          ),
+          const SizedBox(width: 10),
+          Text(
+            '${(accuracy * 100).toStringAsFixed(0)}%',
+            style: TextStyle(
+              color: palette.accent,
+              fontSize: 22,
+              fontWeight: FontWeight.w900,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _MetricChip extends StatelessWidget {
+  final String label;
+  final String value;
+  final Color accent;
+  final Color textColor;
+
+  const _MetricChip({
+    required this.label,
+    required this.value,
+    required this.accent,
+    required this.textColor,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(18),
+        color: Colors.white.withOpacity(0.05),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            label.toUpperCase(),
+            style: TextStyle(
+              color: textColor.withOpacity(0.55),
+              fontSize: 10,
+              fontWeight: FontWeight.w700,
+              letterSpacing: 1.0,
+            ),
+          ),
+          const SizedBox(height: 3),
+          Text(
+            value,
+            style: TextStyle(
+              color: accent,
+              fontSize: 13,
+              fontWeight: FontWeight.w800,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _AmbientLuxuryPainter extends CustomPainter {
+  final Color primary;
+  final Color secondary;
+  final Color accent;
+  final OverlayPerformanceMode performanceMode;
+  final OverlayFinishConfiguration finish;
+
+  const _AmbientLuxuryPainter({
+    required this.primary,
+    required this.secondary,
+    required this.accent,
+    required this.performanceMode,
+    required this.finish,
+  });
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final vignette = finish.vignetteStrength.clamp(0.0, 1.0);
+    final bloom = finish.bloomIntensity.clamp(0.0, 1.0);
+    final sparkleDensity = finish.sparkleDensity.clamp(0.0, 1.0);
+    final topGlow = Paint()
+      ..shader = RadialGradient(
+        center: const Alignment(-0.9, -0.9),
+        radius: 1.1,
+        colors: [
+          accent.withOpacity(
+              (performanceMode == OverlayPerformanceMode.low ? 0.12 : 0.22) +
+                  (0.10 * bloom)),
+          Colors.transparent,
+        ],
+      ).createShader(Offset.zero & size);
+
+    final sideGlow = Paint()
+      ..shader = RadialGradient(
+        center: const Alignment(1.0, -0.2),
+        radius: 1.0,
+        colors: [
+          secondary.withOpacity(0.18 + (0.08 * bloom)),
+          Colors.transparent,
+        ],
+      ).createShader(Offset.zero & size);
+
+    canvas.drawRect(Offset.zero & size, topGlow);
+    canvas.drawRect(Offset.zero & size, sideGlow);
+
+    if (vignette > 0) {
+      final vignettePaint = Paint()
+        ..shader = RadialGradient(
+          center: Alignment.center,
+          radius: 0.96,
+          colors: [
+            Colors.transparent,
+            Colors.transparent,
+            Colors.black.withOpacity(0.14 + (0.22 * vignette)),
+          ],
+          stops: const [0.0, 0.64, 1.0],
+        ).createShader(Offset.zero & size);
+      canvas.drawRect(Offset.zero & size, vignettePaint);
+    }
+
+    final linePaint = Paint()
+      ..color = Colors.white.withOpacity(0.045)
+      ..strokeWidth = 1;
+
+    for (var i = 0; i < 4; i++) {
+      final y = size.height * (0.18 + (i * 0.18));
+      canvas.drawLine(Offset(size.width * 0.08, y),
+          Offset(size.width * 0.92, y), linePaint);
+    }
+
+    if (performanceMode != OverlayPerformanceMode.low) {
+      final dotPaint = Paint()..color = accent.withOpacity(0.12 + (0.18 * sparkleDensity));
+      final sparkles = <Offset>[
+        Offset(size.width * 0.86, size.height * 0.18),
+        Offset(size.width * 0.18, size.height * 0.74),
+        Offset(size.width * 0.70, size.height * 0.66),
+        if (sparkleDensity > 0.30) Offset(size.width * 0.58, size.height * 0.24),
+        if (sparkleDensity > 0.55) Offset(size.width * 0.30, size.height * 0.34),
+        if (sparkleDensity > 0.80) Offset(size.width * 0.82, size.height * 0.48),
+      ];
+      for (var i = 0; i < sparkles.length; i++) {
+        canvas.drawCircle(sparkles[i], 1.8 + (i % 3) * 0.8, dotPaint);
+      }
+    }
+  }
+
+  @override
+  bool shouldRepaint(covariant _AmbientLuxuryPainter oldDelegate) {
+    return primary != oldDelegate.primary ||
+        secondary != oldDelegate.secondary ||
+        accent != oldDelegate.accent ||
+        performanceMode != oldDelegate.performanceMode ||
+        finish != oldDelegate.finish;
+  }
+}
+
+class _CounterRingPainter extends CustomPainter {
+  final WorkoutOverlayCustomization customization;
+  final Color phaseColor;
+
+  const _CounterRingPainter({
+    required this.customization,
+    required this.phaseColor,
+  });
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final rect = Offset.zero & size;
+    final center = rect.center;
+    final ringWidth =
+        customization.repCounter.ringThickness.clamp(4.0, 16.0).toDouble();
+    final contourSoftness =
+        customization.repCounter.contourSoftness.clamp(0.0, 1.0).toDouble();
+    final radius = (size.shortestSide / 2) - (ringWidth / 2) - 4;
+    final depth = customization.repCounter.surfaceDepth.clamp(0.0, 1.0);
+    final orbitIntensity =
+        customization.repCounter.orbitIntensity.clamp(0.0, 1.0);
+
+    final outerGlow = Paint()
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = ringWidth + (customization.repCounter.glowIntensity * 8)
+      ..color = phaseColor.withOpacity(
+        customization.performanceMode == OverlayPerformanceMode.low
+            ? 0.10
+            : 0.20,
+      )
+      ..maskFilter = const MaskFilter.blur(BlurStyle.normal, 12);
+
+    final ringPaint = Paint()
+      ..style = PaintingStyle.stroke
+      ..strokeCap = StrokeCap.round
+      ..strokeWidth = ringWidth
+      ..shader = SweepGradient(
+        colors: [
+          customization.palette.secondary,
+          customization.palette.accent,
+          phaseColor,
+          customization.palette.secondary,
+        ],
+      ).createShader(rect);
+
+    final shellPaint = Paint()
+      ..shader = RadialGradient(
+        colors: [
+          Color.lerp(
+                customization.palette.textPrimary,
+                customization.palette.surface,
+                0.86 - (depth * 0.22),
+              ) ??
+              customization.palette.surface,
+          customization.palette.surface
+              .withOpacity(customization.repCounter.opacity),
+          Color.lerp(
+                customization.palette.primary,
+                customization.palette.surface,
+                0.30 + (depth * 0.24),
+              ) ??
+              customization.palette.primary,
+        ],
+        stops: [
+          0.0,
+          (0.54 + (depth * 0.08)).clamp(0.0, 1.0),
+          1.0,
+        ],
+      ).createShader(rect)
+      ..style = PaintingStyle.fill;
+
+    final outerShapePath = _buildCounterShapePath(
+      rect: Rect.fromCircle(center: center, radius: radius),
+      shape: customization.repCounter.shape,
+      softness: contourSoftness,
+    );
+    final innerShapePath = _buildCounterShapePath(
+      rect: Rect.fromCircle(center: center, radius: radius - (ringWidth * 0.86)),
+      shape: customization.repCounter.shape,
+      softness: contourSoftness,
+    );
+
+    if (customization.repCounter.shape == OverlayCounterShape.arc) {
+      canvas.drawCircle(center, radius, outerGlow);
+      canvas.drawCircle(center, radius - (ringWidth * 0.86), shellPaint);
+    } else {
+      canvas.drawPath(outerShapePath, outerGlow);
+      canvas.drawPath(innerShapePath, shellPaint);
+    }
+
+    if (customization.repCounter.shape == OverlayCounterShape.arc) {
+      canvas.drawArc(
+        Rect.fromCircle(center: center, radius: radius),
+        -math.pi * 0.8,
+        math.pi * 1.6,
+        false,
+        ringPaint,
+      );
+    } else {
+      canvas.drawPath(outerShapePath, ringPaint);
+    }
+
+    if (customization.repCounter.animationStyle !=
+            OverlayAnimationStyle.minimal &&
+        customization.performanceMode != OverlayPerformanceMode.low) {
+      final accentPaint = Paint()
+        ..style = PaintingStyle.stroke
+        ..strokeWidth = 1.4
+        ..color = Colors.white.withOpacity(0.20);
+      canvas.drawCircle(center, radius - ringWidth - 4, accentPaint);
+
+      final orbitPaint = Paint()
+        ..color = customization.palette.accent
+            .withOpacity(0.10 + (0.18 * orbitIntensity));
+      final orbitStroke = Paint()
+        ..style = PaintingStyle.stroke
+        ..strokeWidth = 1.0 + orbitIntensity
+        ..color = phaseColor.withOpacity(0.08 + (0.12 * orbitIntensity));
+      if (customization.repCounter.shape == OverlayCounterShape.arc ||
+          customization.repCounter.shape == OverlayCounterShape.circle) {
+        canvas.drawCircle(
+          center,
+          radius - ringWidth - (8 + (6 * orbitIntensity)),
+          orbitStroke,
+        );
+      } else {
+        final orbitPath = _buildCounterShapePath(
+          rect: Rect.fromCircle(
+            center: center,
+            radius: radius - ringWidth - (8 + (6 * orbitIntensity)),
+          ),
+          shape: customization.repCounter.shape,
+          softness: contourSoftness,
+        );
+        canvas.drawPath(orbitPath, orbitStroke);
+      }
+      for (var i = 0; i < 3; i++) {
+        final angle = (-math.pi / 3) + (i * 1.9);
+        final orbitRadius = radius - ringWidth - (8 + (6 * orbitIntensity));
+        final dot = Offset(
+          center.dx + (math.cos(angle) * orbitRadius * 0.92),
+          center.dy + (math.sin(angle) * orbitRadius * 0.92),
+        );
+        canvas.drawCircle(
+            dot, 1.4 + (1.8 * orbitIntensity) + (i * 0.4), orbitPaint);
+      }
+    }
+  }
+
+  @override
+  bool shouldRepaint(covariant _CounterRingPainter oldDelegate) {
+    return customization != oldDelegate.customization ||
+        phaseColor != oldDelegate.phaseColor;
+  }
+}
+
+Path _buildCounterShapePath({
+  required Rect rect,
+  required OverlayCounterShape shape,
+  required double softness,
+}) {
+  final safeSoftness = softness.clamp(0.0, 1.0);
+  switch (shape) {
+    case OverlayCounterShape.circle:
+    case OverlayCounterShape.arc:
+      return Path()..addOval(rect);
+    case OverlayCounterShape.hex:
+      return _polygonPath(rect, 6, safeSoftness);
+    case OverlayCounterShape.diamond:
+      return _diamondPath(rect, safeSoftness);
+    case OverlayCounterShape.shield:
+      return _shieldPath(rect, safeSoftness);
+    case OverlayCounterShape.flower:
+      return _flowerPath(rect, safeSoftness);
+  }
+}
+
+Path _polygonPath(Rect rect, int sides, double softness) {
+  final center = rect.center;
+  final radius = rect.shortestSide / 2;
+  final points = List<Offset>.generate(sides, (index) {
+    final angle = (-math.pi / 2) + ((math.pi * 2 * index) / sides);
+    return Offset(
+      center.dx + (math.cos(angle) * radius),
+      center.dy + (math.sin(angle) * radius),
+    );
+  });
+  return _roundedPointsPath(points, rect.shortestSide * (0.04 + (0.10 * softness)));
+}
+
+Path _diamondPath(Rect rect, double softness) {
+  final center = rect.center;
+  final points = <Offset>[
+    Offset(center.dx, rect.top),
+    Offset(rect.right, center.dy),
+    Offset(center.dx, rect.bottom),
+    Offset(rect.left, center.dy),
+  ];
+  return _roundedPointsPath(points, rect.shortestSide * (0.06 + (0.12 * softness)));
+}
+
+Path _shieldPath(Rect rect, double softness) {
+  final radius = rect.shortestSide * (0.10 + (0.12 * softness));
+  return Path()
+    ..moveTo(rect.left + radius, rect.top + (rect.height * 0.10))
+    ..quadraticBezierTo(rect.left, rect.top + (rect.height * 0.10),
+        rect.left, rect.top + radius)
+    ..lineTo(rect.left, rect.center.dy)
+    ..quadraticBezierTo(
+      rect.left,
+      rect.bottom - (rect.height * 0.18),
+      rect.center.dx,
+      rect.bottom,
+    )
+    ..quadraticBezierTo(
+      rect.right,
+      rect.bottom - (rect.height * 0.18),
+      rect.right,
+      rect.center.dy,
+    )
+    ..lineTo(rect.right, rect.top + radius)
+    ..quadraticBezierTo(rect.right, rect.top + (rect.height * 0.10),
+        rect.right - radius, rect.top + (rect.height * 0.10))
+    ..close();
+}
+
+Path _flowerPath(Rect rect, double softness) {
+  final center = rect.center;
+  final radius = rect.shortestSide / 2;
+  final petals = 6;
+  final inner = radius * (0.68 - (0.10 * softness));
+  final points = List<Offset>.generate(petals * 2, (index) {
+    final isOuter = index.isEven;
+    final angle = (-math.pi / 2) + ((math.pi * index) / petals);
+    final r = isOuter ? radius : inner;
+    return Offset(
+      center.dx + math.cos(angle) * r,
+      center.dy + math.sin(angle) * r,
+    );
+  });
+  return _roundedPointsPath(points, rect.shortestSide * (0.04 + (0.09 * softness)));
+}
+
+Path _roundedPointsPath(List<Offset> points, double radius) {
+  if (points.length < 3) {
+    return Path()..addPolygon(points, true);
+  }
+  final path = Path();
+  for (var i = 0; i < points.length; i++) {
+    final prev = points[(i - 1 + points.length) % points.length];
+    final current = points[i];
+    final next = points[(i + 1) % points.length];
+    final prevDistance = (current - prev).distance;
+    final nextDistance = (current - next).distance;
+    final start = Offset.lerp(
+      current,
+      prev,
+      prevDistance == 0 ? 0 : (radius / prevDistance).clamp(0.0, 0.45),
+    )!;
+    final end = Offset.lerp(
+      current,
+      next,
+      nextDistance == 0 ? 0 : (radius / nextDistance).clamp(0.0, 0.45),
+    )!;
+    if (i == 0) {
+      path.moveTo(start.dx, start.dy);
+    } else {
+      path.lineTo(start.dx, start.dy);
+    }
+    path.quadraticBezierTo(current.dx, current.dy, end.dx, end.dy);
+  }
+  path.close();
+  return path;
+}
+
+class _AccuracyLiquidPainter extends CustomPainter {
+  final Color barColor;
+  final Color accent;
+  final Color gloss;
+  final double liquidMotion;
+
+  const _AccuracyLiquidPainter({
+    required this.barColor,
+    required this.accent,
+    required this.gloss,
+    required this.liquidMotion,
+  });
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final motion = liquidMotion.clamp(0.0, 1.0);
+    final wave = size.height * (0.10 + (motion * 0.12));
+    final path = Path()
+      ..moveTo(0, size.height * 0.26)
+      ..cubicTo(
+        size.width * 0.18,
+        size.height * 0.10,
+        size.width * 0.38,
+        size.height * (0.18 + motion * 0.05),
+        size.width * 0.56,
+        size.height * 0.22,
+      )
+      ..cubicTo(
+        size.width * 0.72,
+        size.height * 0.26,
+        size.width * 0.84,
+        size.height * (0.20 - motion * 0.04),
+        size.width,
+        size.height * 0.16,
+      )
+      ..lineTo(size.width, 0)
+      ..lineTo(0, 0)
+      ..close();
+
+    canvas.drawPath(
+      path,
+      Paint()
+        ..shader = LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: [
+            gloss.withOpacity(0.18 + (motion * 0.08)),
+            accent.withOpacity(0.08 + (motion * 0.10)),
+            Colors.transparent,
+          ],
+        ).createShader(Offset.zero & size),
+    );
+
+    final streamPaint = Paint()
+      ..color = barColor.withOpacity(0.08 + (motion * 0.08))
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = 1.2;
+    for (var i = 0; i < 3; i++) {
+      final y = size.height * (0.38 + (i * 0.16));
+      final stream = Path()
+        ..moveTo(0, y)
+        ..quadraticBezierTo(
+          size.width * 0.34,
+          y - wave + (i * 1.2),
+          size.width * 0.66,
+          y - (wave * 0.24),
+        )
+        ..quadraticBezierTo(
+          size.width * 0.84,
+          y + (wave * 0.45),
+          size.width,
+          y - (wave * 0.08),
+        );
+      canvas.drawPath(stream, streamPaint);
+    }
+  }
+
+  @override
+  bool shouldRepaint(covariant _AccuracyLiquidPainter oldDelegate) {
+    return barColor != oldDelegate.barColor ||
+        accent != oldDelegate.accent ||
+        gloss != oldDelegate.gloss ||
+        liquidMotion != oldDelegate.liquidMotion;
+  }
+}
+
+class _AccuracySpillPainter extends CustomPainter {
+  final Color color;
+  final Color accent;
+  final double glowIntensity;
+  final double spillLength;
+  final double spillWidth;
+  final double liquidMotion;
+
+  const _AccuracySpillPainter({
+    required this.color,
+    required this.accent,
+    required this.glowIntensity,
+    required this.spillLength,
+    required this.spillWidth,
+    required this.liquidMotion,
+  });
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final width = 10 + (10 * liquidMotion) + (8 * spillWidth);
+    final path = Path()
+      ..moveTo(size.width / 2 - (width * 0.32), 0)
+      ..cubicTo(
+        size.width / 2 - width,
+        size.height * 0.14,
+        size.width / 2 - (width * 0.20),
+        size.height * 0.34,
+        size.width / 2,
+        size.height * 0.48,
+      )
+      ..cubicTo(
+        size.width / 2 + (width * 0.18),
+        size.height * 0.68,
+        size.width / 2 - (width * 0.12),
+        size.height * 0.82,
+        size.width / 2,
+        size.height,
+      )
+      ..cubicTo(
+        size.width / 2 - (width * 0.56),
+        size.height * 0.82,
+        size.width / 2 - (width * 0.72),
+        size.height * 0.58,
+        size.width / 2 - (width * 0.28),
+        size.height * 0.36,
+      )
+      ..cubicTo(
+        size.width / 2 - (width * 0.74),
+        size.height * 0.20,
+        size.width / 2 - (width * 0.42),
+        size.height * 0.08,
+        size.width / 2 - (width * 0.32),
+        0,
+      )
+      ..close();
+
+    canvas.drawPath(
+      path,
+      Paint()
+        ..color = color.withOpacity(0.16 + (0.18 * glowIntensity))
+        ..maskFilter = MaskFilter.blur(
+          BlurStyle.normal,
+          8 + (8 * glowIntensity),
+        ),
+    );
+    canvas.drawPath(
+      path,
+      Paint()
+        ..shader = LinearGradient(
+          begin: Alignment.topCenter,
+          end: Alignment.bottomCenter,
+          colors: [
+            accent.withOpacity(0.62),
+            color.withOpacity(0.34 + (0.12 * spillLength)),
+            Colors.transparent,
+          ],
+        ).createShader(Offset.zero & size),
+    );
+  }
+
+  @override
+  bool shouldRepaint(covariant _AccuracySpillPainter oldDelegate) {
+    return color != oldDelegate.color ||
+        accent != oldDelegate.accent ||
+        glowIntensity != oldDelegate.glowIntensity ||
+        spillLength != oldDelegate.spillLength ||
+        spillWidth != oldDelegate.spillWidth ||
+        liquidMotion != oldDelegate.liquidMotion;
+  }
+}

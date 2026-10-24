@@ -1,0 +1,34 @@
+93: static const Duration _accuracyBarAnimationDurationNormal =
+95: static const Duration _accuracyBarAnimationDurationRecording =
+135: static const double _minAccuracyUiDelta = 0.02;
+162: currentAccuracy: 0.0,
+163: activeWarnings: [],
+167: double _currentAccuracy = 0.0;
+168: List<FormWarning> _activeWarnings = [];
+372: formWarnings: result.formWarnings,
+373: overallAccuracy: result.overallAccuracy,
+427: accuracy: state.currentAccuracy,
+440: final accuracyDelta = (_currentAccuracy - result.overallAccuracy).abs();
+445: result.formWarnings.length != _activeWarnings.length ||
+446: accuracyDelta >= _minAccuracyUiDelta ||
+459: _currentAccuracy = result.overallAccuracy;
+460: _activeWarnings = result.formWarnings;
+520: final accuracyDelta =
+521: (_exerciseState.currentAccuracy - state.currentAccuracy).abs();
+526: accuracyDelta >= _minAccuracyUiDelta;
+665: accuracy: _exerciseState.currentAccuracy,
+1170: accuracy: _currentAccuracy,
+1201: accuracy: _currentAccuracy,
+1204: warnings: _activeWarnings,
+1234: ? _buildSimpleAccuracyBar(_currentAccuracy)
+1326: accuracy: _currentAccuracy,
+1329: warnings: _activeWarnings,
+1415: Widget _buildSimpleAccuracyBar(double accuracy) {
+1416: final targetValue = accuracy.clamp(0.0, 1.0);
+1419: ? _accuracyBarAnimationDurationRecording
+1420: : _accuracyBarAnimationDurationNormal;
+1494: 'Accuracy',
+1729: context.l10n.t('exercise.summary.avg_accuracy'),
+1730: '${(log.averageAccuracy * 100).toStringAsFixed(1)}%',
+1733: context.l10n.t('exercise.summary.best_accuracy'),
+1734: '${(log.maxAccuracy * 100).toStringAsFixed(1)}%',

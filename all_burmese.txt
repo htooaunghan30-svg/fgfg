@@ -1,0 +1,132 @@
+lib\core\localization\app_localizations.dart:343: 'iconic.menu.title': 'Iconic Program များ',
+lib\core\localization\app_localizations.dart:345: 'Record လုပ်ထားသော video များအတွက် premium post-process style ကိုရွေးနိုင်သည်။ Program တစ်ခုချင်းစီကို live capture အတွင်း phone မပူစေဘဲ ထူးခြားပြီး cinematic ဆန်ကာ အလှတရားရှိစေရန် ပြုလုပ်ထားသည်။',
+lib\core\localization\app_localizations.dart:349: 'Recording ပြီးနောက် luxury zodiac overlay ကိုထည့်ပေးသည်။ ရာသီခွင် ၁၂ ခုစီမှာ မတူညီသော color palette, symbol, aura tint နှင့် engraved style များရှိသည်။',
+lib\core\localization\app_localizations.dart:350: 'iconic.program.zodiac.tag.sign_themes': 'ရာသီခွင် ၁၂ မျိုး',
+lib\core\localization\app_localizations.dart:354: 'Iconic export များအတွက် အထူးသင့်တော်သည်။ Live capture ကပေါ့ပါးနေသေးပြီး luxury treatment ကို recording ပြီးနောက်မှ ထည့်ပေးသည်။',
+lib\core\localization\app_localizations.dart:355: 'iconic.program.festival.eyebrow': 'ယဉ်ကျေးမှု အထိမ်းအမှတ်',
+lib\core\localization\app_localizations.dart:358: 'အနီးစပ်ဆုံး world festival သို့မဟုတ် sporting event အပေါ်မူတည်ပြီး unique luxury overlay ကိုထည့်ပေးသည်။ Festival တစ်ခုစီမှာ ကိုယ်ပိုင် palette, glow နှင့် branding ရှိသည်။',
+lib\core\localization\app_localizations.dart:359: 'iconic.program.festival.tag.festivals': 'Festival ၇၀',
+lib\core\localization\app_localizations.dart:360: 'iconic.program.festival.tag.date_aware': 'နေ့စွဲအလိုက်',
+lib\core\localization\app_localizations.dart:363: 'Theme ကို အနီးဆုံးလာမည့် celebration အလိုက် အလိုအလျောက်ပြောင်းပေးပြီး post-processing အချိန်မှာ apply လုပ်ပေးသည်။',
+lib\core\localization\app_localizations.dart:364: 'iconic.program.studio.eyebrow': 'စိတ်ကြိုက် ပြင်ဆင်နိုင်သည်',
+lib\core\localization\app_localizations.dart:367: 'Rep counter, accuracy bar, narrative flow, icon, color palette နှင့် finish control များကို editable လုပ်နိုင်သော ကိုယ်ပိုင် premium overlay system ကိုသုံးနိုင်သည်။',
+lib\core\localization\app_localizations.dart:372: 'Fixed zodiac သို့မဟုတ် festival style အစား ကိုယ်ပိုင် luxury overlay တစ်ခုဖန်တီးချင်လျှင် ဒီ option ကိုရွေးပါ။',
+lib\core\localization\app_localizations.dart:373: 'iconic.program.studio.action': 'Studio ဖွင့်မည်',
+lib\core\localization\app_localizations.dart:374: 'iconic.program.standard.eyebrow': 'ပေါ့ပါးသော Default',
+lib\core\localization\app_localizations.dart:377: 'Branded cinematic look မလိုချင်သောအခါ လက်ရှိ simple overlay ကိုပဲ ဆက်သုံးပေးသည်။',
+lib\core\localization\app_localizations.dart:380: 'iconic.program.standard.tag.fast_export': 'မြန်သော Export',
+lib\core\localization\app_localizations.dart:382: 'Premium art direction မပါဘဲ လက်ရှိ export style ကိုပဲ သုံးချင်လျှင် ဒီ option ကိုရွေးပါ။',
+lib\core\localization\app_localizations.dart:383: 'iconic.info.title': 'အသုံးပြုပုံ',
+lib\core\localization\app_localizations.dart:384: 'iconic.info.step1': '1. ဒီနေရာမှာ program တစ်ခုကိုရွေးပါ။',
+lib\core\localization\app_localizations.dart:385: 'iconic.info.step2': '2. ပုံမှန်အတိုင်း workout ကို record လုပ်ပါ။',
+lib\core\localization\app_localizations.dart:387: '3. ရွေးထားသော style ကို recording ပြီးနောက် post-processing အချိန်တွင်သာ apply လုပ်ပေးသည်။',
+lib\core\localization\app_localizations.dart:390: 'Default export overlay က\nလက်ရှိပေါ့ပါးသောပုံစံကို ဆက်ထိန်းထားပေးသည်။',
+lib\core\localization\app_localizations.dart:2597: 'overlay.studio.text_branding': 'စာသားနှင့် Branding',
+lib\core\localization\app_localizations.dart:2599: 'luxury အမည်, subtitle tone နှင့် signature line ကိုပြင်နိုင်သည်။',
+lib\core\localization\app_localizations.dart:2600: 'overlay.studio.show_branding_bar': 'branding bar ပြ',
+lib\core\localization\app_localizations.dart:2602: 'အပေါ်ဘက် logo နှင့် text bar ကို ဖွင့်/ပိတ်လုပ်ပါ။',
+lib\core\localization\app_localizations.dart:2608: 'TikTok ပုံစံ အရောင်စုံ gradient border',
+lib\core\localization\app_localizations.dart:2611: 'ဤစာသား ၄ ခုသည် post-process တွင်သာပေါ်မည်။ စာသားတစ်ခုစီအတွက် rep နံပါတ်သတ်မှတ်နိုင်ပြီး အဲဒီ rep သည် 80% accuracy ရောက်မှ ပေါ်မည်။',
+lib\core\localization\app_localizations.dart:2615: 'phase တစ်ခုချင်းစီအတွက် SVG icon များထည့်နိုင်သည်။ အဖြူနောက်ခံနှင့် အကန့်အသတ်မရှင်းသည့်ဘောင်များကို သန့်စင်ပေးပြီး export ကို ပိုသေသပ်စေပါသည်။',
+lib\core\localization\app_localizations.dart:2621: 'အဓိကအရောင်, metallic accent နှင့် phase-specific အရောင်များကို ထိန်းချုပ်နိုင်သည်။',
+lib\core\localization\app_localizations.dart:2627: 'accuracy နှင့် rep cluster နေရာကိုပြောင်းနိုင်ပြီး branding bar ကို တည်ငြိမ်စွာထားကာ overall scale ကိုညှိနိုင်သည်။',
+lib\core\localization\app_localizations.dart:2634: 'လက်ရှိ theme system ကိုမပြောင်းဘဲ premium atmosphere ထပ်ထည့်ပါ။',
+lib\core\localization\app_localizations.dart:2644: 'SVG import မအောင်မြင်ပါ: {error}',
+lib\core\localization\app_localizations.dart:2646: 'SVG မရွေးထားရသေးပါ',
+lib\core\localization\app_localizations.dart:2648: 'Export တွင် ဤ sanitized SVG ကို သုံးပါမည်။ အဖြူနောက်ခံနှင့် မညီညာသည့် bounds များကို အလိုအလျောက် သန့်စင်ပါသည်။',
+lib\core\localization\app_localizations.dart:2650: 'SVG ဖိုင်သာရသည်။ ဖိုင်ရွေးပါ, export badge များ ပိုသန့်ရှင်းစေရန် sanitize လုပ်ပေးပါမည်။',
+lib\core\localization\app_localizations.dart:2652: 'overlay.studio.importing': 'Import လုပ်နေသည်...',
+lib\core\localization\app_localizations.dart:2653: 'overlay.studio.replace_svg': 'SVG အစားထိုး',
+lib\core\localization\app_localizations.dart:2654: 'overlay.studio.choose_svg': 'SVG ရွေးပါ',
+lib\core\localization\app_localizations.dart:2656: 'လက်ခံသော input: `.svg` ဖိုင်များသာ။',
+lib\core\localization\app_localizations.dart:2658: 'analytics.no_data_available': 'ဒေတာမရှိသေးပါ',
+lib\core\localization\app_localizations.dart:2659: 'analytics.chart.date': 'နေ့စွဲ',
+lib\core\localization\app_localizations.dart:2660: 'analytics.chart.accuracy_percent': 'တိကျမှု (%)',
+lib\core\localization\app_localizations.dart:2661: 'analytics.chart.repetitions': 'အကြိမ်ရေ',
+lib\core\localization\app_localizations.dart:2662: 'analytics.title': 'အသေးစိတ် Analytics',
+lib\core\localization\app_localizations.dart:2663: 'analytics.performance_summary': 'စွမ်းဆောင်ရည် အကျဉ်းချုပ်',
+lib\core\localization\app_localizations.dart:2664: 'analytics.consistency': 'တည်ငြိမ်မှု',
+lib\core\localization\app_localizations.dart:2665: 'analytics.improvement': 'တိုးတက်မှု',
+lib\core\localization\app_localizations.dart:2666: 'analytics.peak': 'အမြင့်ဆုံး',
+lib\core\localization\app_localizations.dart:2668: 'ဗီဒီယို export လုပ်နေသည်',
+lib\core\localization\app_localizations.dart:2670: 'သင်ရွေးထားသော overlay effect များကို အသုံးပြုနေသည်...',
+lib\core\localization\app_localizations.dart:2672: 'ဗီဒီယိုသိမ်းပြီးပါပြီ။ overlay export မရသဖြင့် raw recording ကိုအသုံးပြုထားသည်။',
+lib\core\localization\app_localizations.dart:2674: 'post-process overlay မပါဘဲ ဗီဒီယိုသိမ်းပြီးပါပြီ: {error}',
+lib\core\localization\app_localizations.dart:3185: 'settings.title': 'ဆက်တင်များ (Settings)',
+lib\core\localization\app_localizations.dart:3186: 'settings.premium_features': 'ပရီမီယံ လုပ်ဆောင်ချက်များ',
+lib\core\localization\app_localizations.dart:3187: 'settings.premium_account': 'ပရီမီယံ အကောင့်',
+lib\core\localization\app_localizations.dart:3188: 'settings.unlock_all_features': 'လုပ်ဆောင်ချက်အားလုံးကို ဖွင့်ရန်',
+lib\core\localization\app_localizations.dart:3189: 'settings.voice_counting': 'အသံဖြင့် ရေတွက်ခြင်း',
+lib\core\localization\app_localizations.dart:3190: 'settings.speak_count': 'လေ့ကျင့်ခန်းလုပ်နေစဉ် အသံဖြင့်ရေတွက်ပါ',
+lib\core\localization\app_localizations.dart:3191: 'settings.voice_counting_language': 'အသံဖြင့်ရေတွက်မည့် ဘာသာစကား',
+lib\core\localization\app_localizations.dart:3192: 'settings.upgrade_to_premium': 'ပရီမီယံသို့ အဆင့်မြှင့်ရန်',
+lib\core\localization\app_localizations.dart:3193: 'settings.upgrade_subtitle': 'ပရီမီယံ လုပ်ဆောင်ချက်များကို ရယူပါ',
+lib\core\localization\app_localizations.dart:3194: 'settings.app_settings': 'App ဆက်တင်များ',
+lib\core\localization\app_localizations.dart:3195: 'settings.profile_name': 'ပရိုဖိုင် အမည်',
+lib\core\localization\app_localizations.dart:3196: 'settings.appearance': 'အသွင်အပြင်',
+lib\core\localization\app_localizations.dart:3197: 'settings.theme': 'အခင်းအကျင်း (Theme)',
+lib\core\localization\app_localizations.dart:3198: 'settings.language': 'ဘာသာစကား',
+lib\core\localization\app_localizations.dart:3199: 'settings.data': 'ဒေတာ',
+lib\core\localization\app_localizations.dart:3200: 'settings.clear_data': 'ဒေတာ ဖျက်ရန်',
+lib\core\localization\app_localizations.dart:3201: 'settings.clear_data_subtitle': 'သိမ်းဆည်းထားသော ဒေတာများအားလုံးဖျက်ရန်',
+lib\core\localization\app_localizations.dart:3202: 'settings.about': 'အက်ပ်အကြောင်း',
+lib\core\localization\app_localizations.dart:3203: 'settings.version': 'ဗားရှင်း (Version)',
+lib\core\localization\app_localizations.dart:3204: 'settings.privacy_policy': 'ကိုယ်ရေးကိုယ်တာ မူဝါဒ',
+lib\core\localization\app_localizations.dart:3205: 'settings.terms': 'ဝန်ဆောင်မှု စည်းမျဉ်းများ',
+lib\core\localization\app_localizations.dart:3206: 'settings.disclaimer': 'ရှင်းလင်းချက်',
+lib\core\localization\app_localizations.dart:3207: 'settings.select_theme': 'Theme ရွေးချယ်ပါ',
+lib\core\localization\app_localizations.dart:3208: 'settings.select_language': 'ဘာသာစကား ရွေးချယ်ပါ',
+lib\core\localization\app_localizations.dart:3209: 'settings.clear_all_data': 'ဒေတာ အားလုံး ဖျက်ရန်',
+lib\core\localization\app_localizations.dart:3210: 'settings.clear_all_data_desc': 'သင့်ဒေတာအားလုံးကို ဖျက်ရန် သေချာပါသလား။ ဤလုပ်ဆောင်ချက်ကို ပြန်လည်ရယူ၍ မရနိုင်ပါ။',
+lib\core\localization\app_localizations.dart:3211: 'settings.clear_success': 'ဒေတာများကို အောင်မြင်စွာ ဖျက်ပစ်ပါပြီ',
+lib\core\localization\app_localizations.dart:3212: 'settings.clear_failed': 'ဒေတာ ဖျက်ခြင်း မအောင်မြင်ပါ: {error}',
+lib\data\mock\mock_data.dart:241: // TODAY'S LOGS - အရေးကြီးဆုံး
+lib\data\mock\mock_data.dart:244: timestamp: now, // ဒီနေ့
+lib\data\mock\mock_data.dart:259: timestamp: now.subtract(const Duration(hours: 2)), // ဒီနေ့ နေ့လည်
+lib\data\models\exercise_model.dart:32: this.totalReps= 0,             // Default value ပေးထားလို့ရပါတယ်
+lib\data\services\isar_service.dart:7: import 'package:flutter/material.dart'; // ဒါကို ထည့်ပေးပါ
+lib\data\services\isar_service.dart:8: import '../../core/constants/exercise_config.dart'; // သင့် path အတိုင်းချိန်ညှိပါ
+lib\data\services\isar_service.dart:12: @Index() // ဒီ Index ပါမှ Between ကို သုံးလို့ရမှာပါ
+lib\data\services\isar_service.dart:261: // QueryBuilder ကို တိုက်ရိုက် filter ထဲမှာ မဆောက်ဘဲ
+lib\data\services\isar_service.dart:262: // isar instance ကနေ တိုက်ရိုက် query ဆောက်တဲ့ ပုံစံပါ
+lib\data\services\isar_service.dart:273: // နောက်ထပ် logic တွေ ထပ်ထည့်ချင်ရင် finalQuery ကို သုံးပါ
+lib\domain\repositories\exercise_repository_impl.dart:3: import 'package:isar/isar.dart'; // isar package ကို import လုပ်ဖို့ မမေ့ပါနဲ့
+lib\domain\repositories\exercise_repository_impl.dart:14: //part 'user_activity.g.dart'; // ဒါမျိုး ပါရပါမယ်
+lib\domain\repositories\exercise_repository_impl.dart:18: // getAllExercises method ကို ပြင်ဆင်ပါ
+lib\domain\repositories\exercise_repository_impl.dart:95: // getTotalReps method ကို ပြင်ဆင်ပါ
+lib\domain\repositories\exercise_repository_impl.dart:116: // Initialize method ထည့်ပါ
+lib\domain\repositories\exercise_repository_impl.dart:257: // exerciseId က index မဟုတ်ရင် filter() သုံးရပါမယ်
+lib\domain\repositories\exercise_repository_impl.dart:294: String? exerciseId, // Comma ထည့်ပေးလိုက်ပါပြီ
+lib\domain\repositories\exercise_repository_impl.dart:301: // where() အစား filter() ကို ပြောင်းသုံးထားပါတယ် (Safe Side)
+lib\domain\repositories\exercise_repository_impl.dart:345: // var သုံးပြီး filter() နဲ့ စပါမယ်
+lib\domain\repositories\exercise_repository_impl.dart:373: // date က index မဟုတ်ရင် filter() သုံးရပါမယ်
+lib\domain\repositories\user_repository_impl.dart:8: // Models တွေကို မဖြစ်မနေ Import လုပ်ရပါမယ်။
+lib\domain\repositories\user_repository_impl.dart:9: // ဒါမှသာ isar.userActivities တို့ findFirst တို့ကို သုံးလို့ရမှာပါ။
+lib\domain\repositories\user_repository_impl.dart:42: // Nullable အဖြစ်ပြောင်းလိုက်တာက error ကင်းဖို့ ပိုစိတ်ချရပါတယ်
+lib\domain\repositories\user_repository_impl.dart:61: // Write Transaction သုံးပြီး Badge တွေကို Database ထဲ သိမ်းပါမယ်
+lib\domain\repositories\user_repository_impl.dart:75: // SharedPreferences ready ဖြစ်မဖြစ် စစ်ပေးမယ့် method
+lib\domain\repositories\user_repository_impl.dart:396: // Query Logic အမှန်
+lib\domain\repositories\user_repository_impl.dart:445: // မှတ်ချက်: ExerciseLog model ကို import လုပ်ထားမှ exerciseLogs ကိုခေါ်လို့ရမယ်
+lib\domain\repositories\user_repository_impl.dart:472: // Logic Improvement: အချိန်တွေကိုဖယ်ပြီး ရက်စွဲသီးသန့်တွက်ခြင်း
+lib\domain\repositories\user_repository_impl.dart:476: // ပထမဆုံးရက်က "ဒီနေ့" ဒါမှမဟုတ် "မနေ့က" မဟုတ်ရင် streak ပြတ်နေပြီ
+lib\domain\repositories\user_repository_impl.dart:482: // ဒီနေ့လည်း မလုပ်၊ မနေ့ကလည်း မလုပ်ခဲ့ရင် 0 ပဲ
+lib\domain\repositories\user_repository_impl.dart:488: // အကယ်၍ နောက်ဆုံးလုပ်ခဲ့တာ မနေ့ကဆိုရင် checkDate ကို မနေ့ကကနေ စမယ်
+lib\domain\repositories\user_repository_impl.dart:495: // Activity date ကိုလည်း time ဖြုတ်မယ်
+lib\domain\repositories\user_repository_impl.dart:503: // ရက်ကျော်သွားရင် ရပ်မယ်
+lib\domain\repositories\user_repository_impl.dart:506: // activityDate က checkDate ထက်ကြီးနေရင် (duplicate entries for same day) ကျော်သွားမယ်
+lib\presentation\screens\exercise_screen.dart:179: // ✅ Widget build ပြီးမှ စတင်ပါ
+lib\presentation\screens\exercise_screen.dart:192: // Services တွေ စတင်မယ်
+lib\presentation\screens\exercise_screen.dart:198: // UI ကို update လုပ်မယ်
+lib\presentation\screens\exercise_screen.dart:201: // ဒီမှာ state update တွေ လုပ်နိုင်တယ်
+lib\presentation\screens\exercise_screen.dart:207: // Error handling လုပ်ပါ
+lib\presentation\screens\onboarding_flow_screen.dart:284: _LanguageOption(code: 'my', label: 'မြန်မာ'),
+lib\presentation\widgets\rep_counter.dart:69: final Duration? holdDuration; // ✅ Static exercise များအတွက်
+lib\presentation\widgets\rep_counter.dart:70: final bool isStaticExercise; // ✅ Exercise type ခွဲခြားရန်
+lib\presentation\widgets\rep_counter.dart:81: this.isStaticExercise = false, // ✅ Default အနေနဲ့ false
+lib\presentation\widgets\rep_counter.dart:87: // ✅ Static exercise ဖြစ်ပြီး hold အနေအထားဆိုရင် time ပြမယ်
+lib\presentation\widgets\rep_counter.dart:149: // ✅ Main Display - Static exercise ဖြစ်ရင် time, မဟုတ်ရင် rep count
+lib\presentation\widgets\rep_counter.dart:193: // ✅ Dynamic Label - Static/Dynamic ပေါ်မူတည်ပြီး ပြောင်းမယ်
+lib\presentation\widgets\rep_counter.dart:320: // ✅ Hold time ပေါ်မူတည်ပြီး color ပြောင်းခြင်း
+lib\presentation\widgets\rep_counter.dart:343: final Duration? holdDuration; // ✅ Static exercise များအတွက်
+lib\presentation\widgets\rep_counter.dart:344: final bool isStaticExercise; // ✅ Exercise type ခွဲခြားရန်
+lib\presentation\widgets\rep_counter.dart:404: // ✅ Count, phase သို့မဟုတ် hold duration ပြောင်းရင် animation စမယ်

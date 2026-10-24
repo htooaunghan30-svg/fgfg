@@ -1,0 +1,1 @@
+flutter build apk --dart-define=LICENSE_SIGN_PUBKEY_B64=MCowBQYDK2VwAyEAO+ccYbHHh9tghQpgLKE8avsM2co0orB9cQUgFnxofTk=

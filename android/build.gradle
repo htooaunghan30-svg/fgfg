@@ -1,0 +1,142 @@
+// allprojects {
+//     repositories {
+//         google()
+//         mavenCentral()
+//         maven { url 'https://storage.googleapis.com/download.flutter.io' }
+//     }
+//     subprojects {
+//     afterEvaluate { project ->
+//         if (project.hasProperty('android')) {
+//             project.android {
+//                 if (namespace == null) {
+//                     namespace project.group
+//                 }
+//             }
+//         }
+//     }
+// }
+// configurations.all {
+//         resolutionStrategy {
+//             force 'androidx.work:work-runtime:2.8.1'
+//             force 'androidx.work:work-runtime-ktx:2.8.1'
+//         }
+//     }
+
+// }
+
+// rootProject.buildDir = "../build"
+// subprojects {
+//     project.buildDir = "${rootProject.buildDir}/${project.name}"
+// }
+// subprojects {
+//     project.evaluationDependsOn(":app")
+// }
+
+// tasks.register("clean", Delete) {
+//     delete rootProject.buildDir
+// }
+
+
+
+// android/build.gradle (Project level)
+
+buildscript {
+    ext.kotlin_version = '1.9.0' // သေချာအောင် 1.9.0 လောက်ထားပေးပါ
+    repositories {
+        google()
+        mavenCentral()
+    }
+    dependencies {
+        // သင့်ရဲ့ SDK 35 နဲ့ ကိုက်ညီအောင် 8.2.0 သုံးထားတာ မှန်ပါတယ်
+        classpath 'com.android.tools.build:gradle:8.2.0'
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+    }
+}
+
+allprojects {
+    repositories {
+        google()
+        mavenCentral()
+        maven { url 'https://storage.googleapis.com/download.flutter.io' }
+        maven { url 'https://jitpack.io' } // ဒါကိုလည်း ထည့်ပေးထားပါ
+    }
+}
+
+// ဒီအပိုင်းက အရေးကြီးဆုံးပါ - Library တွေအားလုံးကို SDK 34/35 သုံးဖို့ အတင်းခိုင်းတဲ့အပိုင်း
+subprojects {
+    afterEvaluate { project ->
+        if (project.hasProperty('android')) {
+            project.android {
+                if (namespace == null) {
+                    namespace project.group
+                }
+                // isar_flutter_libs အပါအဝင် အားလုံးကို 34/35 နဲ့ compile လုပ်ခိုင်းတာပါ
+                compileSdk 35 
+                  
+                defaultConfig {
+                    if (it.hasProperty('targetSdkVersion')) {
+                        targetSdkVersion 35
+                    }
+                }
+
+                // Align Java compatibility across all Android subprojects
+                compileOptions {
+                    sourceCompatibility JavaVersion.VERSION_17
+                    targetCompatibility JavaVersion.VERSION_17
+                }
+            }
+        }
+    }
+    
+    // lStar error ကိုဖြစ်စေတဲ့ dependency တွေကို version fix လုပ်တာပါ
+    configurations.all {
+        resolutionStrategy {
+            force 'androidx.core:core-ktx:1.12.0'
+            force 'androidx.work:work-runtime:2.8.1'
+            force 'androidx.work:work-runtime-ktx:2.8.1'
+        }
+    }
+
+    // Align Kotlin JVM target across all subprojects
+    tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).configureEach {
+        kotlinOptions {
+            jvmTarget = "17"
+        }
+    }
+}
+
+rootProject.buildDir = "../build"
+subprojects {
+    project.buildDir = "${rootProject.buildDir}/${project.name}"
+}
+subprojects {
+    project.evaluationDependsOn(":app")
+}
+
+// Force Java/Kotlin toolchains to 17 for all projects (prevents 1.8 vs 17 mismatch)
+allprojects {
+    tasks.withType(JavaCompile).configureEach {
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
+    }
+    tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).configureEach {
+        kotlinOptions {
+            jvmTarget = "17"
+        }
+    }
+}
+
+// Ensure Kotlin JVM target is overridden after all projects are evaluated
+gradle.projectsEvaluated {
+    allprojects {
+        tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).configureEach {
+            kotlinOptions {
+                jvmTarget = "17"
+            }
+        }
+    }
+}
+
+tasks.register("clean", Delete) {
+    delete rootProject.buildDir
+}

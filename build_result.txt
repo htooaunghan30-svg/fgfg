@@ -1,0 +1,44 @@
+
+Running Gradle task 'assembleDebug'...                          
+flutter : Note: 
+C:\Users\Han Htoo Aung\A
+ppData\Local\Pub\Cache\h
+osted\pub.dev\google_mlk
+it_commons-0.7.1\android
+\src\main\java\com\googl
+e_mlkit_commons\InputIma
+geConverter.java uses 
+unchecked or unsafe 
+operations.
+At line:1 char:1
++ flutter build apk 
+--debug 2>&1 | Out-File 
+-FilePath 
+build_result.txt  ...
++ ~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~
+    + CategoryInfo      
+        : NotSpecified: 
+(Not    e: 
+C:\Users\...afe ope    
+rations.:String) [], R  
+  emoteException
+    + 
+FullyQualifiedErrorI    
+d : NativeCommandError
+ 
+Note: Recompile with 
+-Xlint:unchecked for 
+details.
+Note: C:\Users\Han Htoo 
+Aung\AppData\Local\Pub\C
+ache\hosted\pub.dev\goog
+le_mlkit_pose_detection-
+0.12.0\android\src\main\
+java\com\google_mlkit_po
+se_detection\PoseDetecto
+r.java uses unchecked 
+or unsafe operations.
+Note: Recompile with 
+-Xlint:unchecked for 
+details.

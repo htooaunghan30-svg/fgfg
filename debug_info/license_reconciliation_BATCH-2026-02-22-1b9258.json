@@ -1,0 +1,35 @@
+{
+  "createdAt": "2026-08-07T12:40:00.000Z",
+  "batchId": "BATCH-2026-02-22-1b9258",
+  "inputs": {
+    "hashBackup": "debug_info/license_hash_backup_BATCH-2026-02-22-1b9258.json",
+    "decryptedExport": "C:\\Users\\Han Htoo Aung\\Documents\\key\\output\\lib\\licenses_BATCH-2026-02-22-1b9258.decrypted.json"
+  },
+  "summary": {
+    "decryptedLicenseCount": 1500,
+    "hashBackupRowCount": 1500,
+    "decryptedUniqueFirstSegmentPrefixes": 1500,
+    "hashBackupUniquePrefixes": 1500,
+    "prefixesMissingInHashBackup": 0,
+    "prefixesMissingInDecryptedExport": 0,
+    "duplicatePrefixesInHashBackup": 0,
+    "duplicatePrefixesInDecryptedExport": 0
+  },
+  "hashChecks": {
+    "hmacSha256WithCurrentLocalEnvPepperMatches": 0,
+    "plainSha256Matches": 0,
+    "diagnosis": "The decrypted export and hash backup are the same batch by 1:1 prefix reconciliation, but the stored hashes do not match hashes derived with the current local LICENSE_PEPPER. Keep or recover the original generation-time LICENSE_PEPPER for this February batch before using direct hash verification against these rows."
+  },
+  "normalization": {
+    "changedByNormalizationCount": 1,
+    "invalidAfterNormalizationCount": 0,
+    "notes": [
+      "One decrypted key contains extra whitespace after the HF- prefix. The app normalizer removes whitespace, so the usable prefix is HF-94WS.",
+      "No keys are invalid after applying the app-equivalent normalization."
+    ]
+  },
+  "securityNotes": [
+    "This report intentionally omits full plaintext license keys and secret pepper values.",
+    "The active decrypted export remains outside the app workspace under the Documents key output folder."
+  ]
+}

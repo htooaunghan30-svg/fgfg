@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Night-mode launch background -->
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:drawable="@color/launch_background" />
+
+    <!-- Show the app launcher icon while Flutter is starting. -->
+    <item>
+        <scale
+            android:drawable="@mipmap/ic_launcher"
+            android:scaleWidth="130%"
+            android:scaleHeight="130%"
+            android:scaleGravity="center"
+            android:useLevel="false" />
+    </item>
+</layer-list>

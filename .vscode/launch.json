@@ -1,0 +1,17 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "healthy_life (Release with signature)",
+      "request": "launch",
+      "type": "dart",
+      "flutterMode": "release",
+      "args": [
+        "--dart-define=LICENSE_VERIFY_URL_ENC=IC0VfkriwKTLLwVuWaGa9dYoYAAy15Ts3ioecAizgf/bIx99XuSU/fFGaBZGvp32wj1Wbx75i/DYPAR0E7X+l7RfHWY=",
+        "--dart-define=LICENSE_VERIFY_URL_KEY=HF_SECURE_URL_KEY_2026",
+        "--dart-define=APP_SIGNATURE_SHA256=1B5258338C707A6DD6EAC4DBCBA2E77B139353E466414881B31936ABB0FFD753",
+        "--dart-define=EXPECTED_PACKAGE_ID=com.example.healthy_life"
+      ]
+    }
+  ]
+}
